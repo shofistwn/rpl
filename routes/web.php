@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GuruController;
+use App\Http\Controllers\{
+    GuruController,
+    ArtikelController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +22,4 @@ Route::get('/', function () {
 })->name('index');
 
 route::resource('/guru', GuruController::class);
+route::resource('/artikel', ArtikelController::class);

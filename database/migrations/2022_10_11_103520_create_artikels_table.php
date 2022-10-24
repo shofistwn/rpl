@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,12 +16,12 @@ class CreateArtikelsTable extends Migration
     {
         Schema::create('artikel', function (Blueprint $table) {
             $table->id();
-            $table->string('gambar');
+            $table->foreignIdFor(User::class);
+            $table->string('foto');
             $table->string('judul');
             $table->string('slug');
             $table->string('kategori')->nullable();
             $table->text('isi');
-            $table->foreignIdFor(\App\Models\User::class);
             $table->timestamps();
         });
     }

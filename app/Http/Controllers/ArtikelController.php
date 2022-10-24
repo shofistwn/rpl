@@ -4,100 +4,140 @@ namespace App\Http\Controllers;
 
 use App\Models\Artikel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ArtikelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('pages.artikel.index');
+        $dataArtikel = Artikel::orderBy('id', 'desc')->get();
+        return view('pages.artikel.index', compact('dataArtikel'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('pages.artikel.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'judul' => 'required',
             'kategori' => 'string',
             'isi' => 'string',
         ]);
 
-        $image = $request->file('gambar');
-        $image->storeAs('public/assets/img/guru/', $image->hashName());
+        $isi = $request->isi;
+        $dom = new \DomDocument();
+        $dom->loadHtml($isi, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $imageFile = $dom->getElementsByTagName('imageFile');
+
+        foreach ($imageFile as $item => $image) {
+            $data = $img->getAttribute('src');
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $imgeData = base64_decode($data);
+            $image_name = "/upload/" . time() . $item . '.png';
+            $path = public_path() . $image_name;
+            file_put_contents($path, $imgeData);
+
+            $image->removeAttribute('src');
+            $image->setAttribute('src', $image_name);
+        }
+
+        $foto = $request->file('foto');
+        $namaFoto = time() . $foto->hashName();
+        $foto->storeAs('public/artikel', $namaFoto);
 
         Artikel::create([
-            'gambar' => $image->hashName(),
-            'nama' => $request->nama,
-            'alamat' => $request->alamat,
-            'email' => $request->email,
-            'telepon' => $request->telepon
+            'user_id' => auth()->user()->id,
+            'foto' => $namaFoto,
+            'judul' => $request->judul,
+            'slug' => $request->judul,
+            'kategori' => $request->kategori,
+            'isi' => $dom->saveHTML(),
         ]);
 
-        return redirect()->route('guru.index')->with('success', 'Data berhasil ditambahkan');
+        Alert::success('Berhasil!', 'Artikel Berhasil Ditambahkan');
+
+        return redirect()->route('artikel.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Artikel  $artikel
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Artikel $artikel)
+    public function show($slug)
     {
-        //
+        Artikel::where('slug', $slug)->first();
+        return view('pages.artikel.show', compact('artikel'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Artikel  $artikel
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Artikel $artikel)
     {
-        //
+        return view('pages.artikel.edit', compact('artikel'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Artikel  $artikel
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Artikel $artikel)
     {
-        //
+        $request->validate([
+            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'judul' => 'required',
+            'kategori' => 'string',
+            'isi' => 'string',
+        ]);
+
+        $isi = $request->isi;
+        $dom = new \DomDocument();
+        $dom->loadHtml($isi, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $imageFile = $dom->getElementsByTagName('imageFile');
+
+        foreach ($imageFile as $item => $image) {
+            $data = $img->getAttribute('src');
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $imgeData = base64_decode($data);
+            $image_name = "/upload/" . time() . $item . '.png';
+            $path = public_path() . $image_name;
+            file_put_contents($path, $imgeData);
+
+            $image->removeAttribute('src');
+            $image->setAttribute('src', $image_name);
+        }
+
+        if ($request->file('foto') == "") {
+            Artikel::create([
+                'user_id' => auth()->user()->id,
+                'judul' => $request->judul,
+                'slug' => $request->judul,
+                'kategori' => $request->kategori,
+                'isi' => $dom->saveHTML(),
+            ]);
+        } else {
+            $foto = $request->file('foto');
+            $namaFoto = time() . $foto->hashName();
+            $foto->storeAs('public/artikel', $namaFoto);
+
+            Artikel::create([
+                'user_id' => auth()->user()->id,
+                'foto' => $namaFoto,
+                'judul' => $request->judul,
+                'slug' => $request->judul,
+                'kategori' => $request->kategori,
+                'isi' => $dom->saveHTML(),
+            ]);
+        }
+
+        Alert::success('Berhasil!', 'Artikel Berhasil Diedit');
+
+        return redirect()->route('artikel.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Artikel  $artikel
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Artikel $artikel)
     {
-        //
+        Storage::disk('local')->delete('public/artikel/' . $artikel->image);
+        $artikel->delete();
+
+        Alert::success('Berhasil!', 'Artikel Berhasil Dihapus');
+
+        return redirect()->route('artikel.index');
     }
 }

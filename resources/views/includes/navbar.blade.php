@@ -36,7 +36,7 @@
                 <li><a href="#">Informasi Lowongan Kerja</a></li>
               </ul>
             </li>
-            <li><a href="blog.html">Artikel</a></li>
+            <li><a href="{{ route('artikel.index') }}">Artikel</a></li>
             <li><a href="contact.html">Kontak</a></li>
           </ul>
         </nav><!-- .navbar -->

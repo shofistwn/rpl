@@ -5,135 +5,106 @@ namespace App\Http\Controllers;
 use App\Models\Guru;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class GuruController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $dataGuru = Guru::get();
         return view('pages.guru.index', compact('dataGuru'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('pages.guru.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'nama' => 'required|string',
             'alamat' => 'required|string',
-            'email' => 'required|email|unique:guru,email',
+            'komli' => 'required|string',
             'telepon' => 'unique:guru,telepon|numeric'
         ]);
 
-        $image = $request->file('foto');
-        $image->storeAs('public/assets/img/guru/', $image->hashName());
+        $foto = $request->file('foto');
+        $namaFoto = time() . $foto->hashName();
+        $foto->storeAs('public/guru', $namaFoto);
 
         Guru::create([
-            'foto' => $image->hashName(),
+            'user_id' => auth()->user()->id,
+            'foto' => $namaFoto,
             'nama' => $request->nama,
+            'komli' => $request->komli,
+            'telepon' => $request->telepon,
             'alamat' => $request->alamat,
-            'email' => $request->email,
-            'telepon' => $request->telepon
         ]);
 
-        return redirect()->route('guru.index')->with('success', 'Data berhasil ditambahkan');
+        Alert::success('Berhasil!', 'Guru Berhasil Ditambahkan');
+
+        return redirect()->route('guru.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Guru  $guru
-     * @return \Illuminate\Http\Response
-     */
     public function show(Guru $guru)
     {
-        //
+        return view('pages.guru.show', compact('guru'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Guru  $guru
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Guru $guru)
     {
         return view('pages.guru.edit', compact('guru'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Guru  $guru
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Guru $guru)
     {
         $request->validate([
             'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'nama' => 'string',
-            'alamat' => 'string',
-            'email' => 'email',
-            'telepon' => 'numeric'
+            'nama' => 'required|string',
+            'alamat' => 'required|string',
+            'komli' => 'required|string',
+            'telepon' => 'required|numeric',
         ]);
 
-        if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $foto->storeAs('public/assets/img/guru', $foto->hashName());
-
-            Storage::delete('public/assets/img/guru/' . $guru->foto);
-
+        if ($request->file('foto') == "") {
             $guru->update([
-                'foto' => $foto->hashName(),
+                'user_id' => auth()->user()->id,
                 'nama' => $request->nama,
+                'komli' => $request->komli,
+                'telepon' => $request->telepon,
                 'alamat' => $request->alamat,
-                'email' => $request->email,
-                'telepon' => $request->telepon
             ]);
         } else {
+            Storage::disk('local')->delete('public/public/guru/' . $guru->foto);
+
+            $foto = $request->file('foto');
+            $namaFoto = time() . $foto->hashName();
+            $foto->storeAs('public/guru', $namaFoto);
+
             $guru->update([
+                'user_id' => auth()->user()->id,
+                'foto' => $namaFoto,
                 'nama' => $request->nama,
+                'komli' => $request->komli,
+                'telepon' => $request->telepon,
                 'alamat' => $request->alamat,
-                'email' => $request->email,
-                'telepon' => $request->telepon
             ]);
         }
 
-        return redirect()->route('guru.index')->with('success', 'Data berhasil diperbarui!');
+        Alert::success('Berhasil!', 'Guru Berhasil Diperbarui');
+
+        return redirect()->route('guru.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Guru  $guru
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Guru $guru)
     {
-        Storage::delete('public/assets/img/guru/' . $guru->foto);
+        Storage::disk('local')->delete('public/public/guru/' . $guru->foto);
         $guru->delete();
 
-        return redirect()->route('guru.index')->with('success', 'Data berhasil dihapus!');
+        Alert::success('Berhasil!', 'Guru Berhasil Dihapus');
+
+        return redirect()->route('guru.index');
     }
 }

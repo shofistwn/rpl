@@ -21,8 +21,8 @@ class CreateGurusTable extends Migration
             $table->string('nama');
             $table->string('komli');
             $table->text('alamat');
-            $table->string('email');
-            $table->string('telepon')->nullable();
+            $table->string('telepon');
+            $table->timestamps();
         });
     }
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    AdminController,
     GuruController,
     ArtikelController
 };
@@ -19,10 +20,22 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Auth::routes();
+
+// user perlu login untuk mengakses
 Route::middleware('auth')->group(function () {
+    // user harus memiliki role admin atau guru untuk mengakses
     Route::middleware('role:admin|guru')->group(function () {
         route::resource('/artikel', ArtikelController::class)->except('index', 'show');
+    });
+
+    // user harus memiliki role admin untuk mengakses
+    Route::middleware('role:admin')->group(function () {
         route::resource('/guru', GuruController::class)->except('index', 'show');
+
+        Route::controller(AdminController::class)->prefix('admin')->name('admin.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/artikel', 'artikel')->name('artikel');
+        });
     });
 });
 
@@ -43,6 +56,7 @@ Route::get('guru-page', function () {
 Route::controller(ArtikelController::class)->prefix('artikel')->name('artikel.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/{slug}', 'show')->name('show');
+    Route::get('/search', 'search')->name('search');
 });
 
 Route::controller(GuruController::class)->prefix('guru')->name('guru.')->group(function () {

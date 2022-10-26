@@ -14,12 +14,12 @@
                         <div class="team-member shadow-sm pb-4">
                             <div class="team-member">
                                 <div class="member-img">
-                                    <img src="{{ Storage::url('public/assets/img/guru') . '/' . $guru->foto }}"
-                                        class="img-fluid rounded" alt="">
+                                    <img src="{{ Storage::url('public/guru/') . $guru->foto }}" class="img-fluid"
+                                        alt="">
                                 </div>
                                 <div class="member-info">
                                     <h4>{{ $guru->nama }}</h4>
-                                    <span>{{ $guru->email }}</span>
+                                    <h6>{{ $guru->komli }}</h6>
                                     <span>{{ $guru->telepon }}</span>
                                     <span>{{ $guru->alamat }}</span>
                                 </div>

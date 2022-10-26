@@ -27,7 +27,7 @@
                                 </div>
                             @enderror
                         </div>
-                        
+
                         <div class="form-group mt-3">
                             <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
                                 id="nama" placeholder="Nama Lengkap" value="{{ old('nama') }}" required>
@@ -40,12 +40,25 @@
                                 </div>
                             @enderror
                         </div>
-                        
-                        <div class="form-group mt-3">
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                                id="email" placeholder="Email" value="{{ old('email') }}" required>
 
-                            @error('email')
+                        <div class="form-group mt-3">
+                            <select class="form-control @error('komli') is-invalid @enderror" name="komli" id="komli"
+                                required>
+                                <option value="" selected>Pilih Kompetensi Keahlihan:</option>
+                                <option {{ old('komli') == 'Basis Data' ? 'selected' : '' }} value="Basis Data">Basis Data
+                                </option>
+                                <option {{ old('komli') == 'Design Grafis' ? 'selected' : '' }} value="Design Grafis">Design
+                                    Grafis</option>
+                                <option {{ old('komli') == 'Pemrogaman Berorientasi Objek' ? 'selected' : '' }}
+                                    value="Pemrogaman Berorientasi Objek">Pemrogaman Berorientasi Objek</option>
+                                <option {{ old('komli') == 'Pemrograman Web Dan Perangkat Bergerak' ? 'selected' : '' }}
+                                    value="Pemrograman Web Dan Perangkat Bergerak">Pemrograman Web Dan Perangkat Bergerak
+                                </option>
+                                <option {{ old('komli') == 'Produk Kreatif dan Kewirausahaan' ? 'selected' : '' }}
+                                    value="Produk Kreatif dan Kewirausahaan">Produk Kreatif dan Kewirausahaan</option>
+                            </select>
+
+                            @error('komli')
                                 <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
                                     {{ $message }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -53,7 +66,7 @@
                                 </div>
                             @enderror
                         </div>
-                        
+
                         <div class="form-group mt-3">
                             <input type="text" class="form-control @error('telepon') is-invalid @enderror" name="telepon"
                                 id="telepon" placeholder="Telepon" value="{{ old('telepon') }}" required>
@@ -66,7 +79,7 @@
                                 </div>
                             @enderror
                         </div>
-                        
+
                         <div class="form-group mt-3">
                             <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" rows="5" placeholder="Alamat"
                                 required>{{ old('alamat') }}</textarea>
@@ -79,7 +92,7 @@
                                 </div>
                             @enderror
                         </div>
-                        
+
                         <div class="text-center mt-3">
                             <a href="{{ route('guru.index') }}" class="btn-back me-2">Kembali</a>
                             <button type="submit">Simpan</button>

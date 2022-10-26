@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Artikel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -12,6 +13,17 @@ class ArtikelController extends Controller
     public function index()
     {
         $dataArtikel = Artikel::orderBy('id', 'desc')->get();
+        return view('pages.artikel.index', compact('dataArtikel'));
+    }
+
+    public function search(Request $request)
+    {
+        $judul = $request->judul;
+
+        $dataArtikel = DB::table('artikel')
+            ->where('judul', 'like', "%" . $judul . "%")
+            ->paginate(6);
+
         return view('pages.artikel.index', compact('dataArtikel'));
     }
 
@@ -67,7 +79,7 @@ class ArtikelController extends Controller
 
     public function show($slug)
     {
-        Artikel::where('slug', $slug)->first();
+        $artikel = Artikel::where('slug', $slug)->with('user')->first();
         return view('pages.artikel.show', compact('artikel'));
     }
 
@@ -104,7 +116,7 @@ class ArtikelController extends Controller
         }
 
         if ($request->file('foto') == "") {
-            Artikel::create([
+            $artikel->update([
                 'user_id' => auth()->user()->id,
                 'judul' => $request->judul,
                 'slug' => $request->judul,
@@ -112,11 +124,13 @@ class ArtikelController extends Controller
                 'isi' => $dom->saveHTML(),
             ]);
         } else {
+            Storage::disk('local')->delete('public/public/artikel/' . $artikel->foto);
+
             $foto = $request->file('foto');
             $namaFoto = time() . $foto->hashName();
             $foto->storeAs('public/artikel', $namaFoto);
 
-            Artikel::create([
+            $artikel->update([
                 'user_id' => auth()->user()->id,
                 'foto' => $namaFoto,
                 'judul' => $request->judul,
@@ -133,11 +147,11 @@ class ArtikelController extends Controller
 
     public function destroy(Artikel $artikel)
     {
-        Storage::disk('local')->delete('public/artikel/' . $artikel->image);
+        Storage::disk('local')->delete('public/public/artikel/' . $artikel->foto);
         $artikel->delete();
 
         Alert::success('Berhasil!', 'Artikel Berhasil Dihapus');
 
-        return redirect()->route('artikel.index');
+        return redirect()->back();
     }
 }

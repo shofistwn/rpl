@@ -34,7 +34,9 @@ Route::middleware('auth')->group(function () {
 
         Route::controller(AdminController::class)->prefix('admin')->name('admin.')->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/guru', 'guru')->name('guru');
             Route::get('/artikel', 'artikel')->name('artikel');
+            Route::get('/loker', 'loker')->name('loker');
         });
     });
 });

@@ -39,22 +39,22 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            @forelse ($dataLoker as $guru)
+                            @forelse ($dataLoker as $loker)
                                 <tr>
                                     <td>
-                                        <img class="img-profile rounded-circle w-25" src="{{ Storage::url('public/guru/') . $guru->foto }}">
+                                        <img class="img-profile rounded-circle w-25" src="{{ Storage::url('public/guru/') . $loker->foto }}">
                                     </td>
-                                    <td><strong>{{ $guru->nama }}</strong></td>
-                                    <td>{{ $guru->komli }}</td>
-                                    <td>{{ $guru->telepon }}</td>
-                                    <td>{{ $guru->alamat }}</td>
+                                    <td><strong>{{ $loker->nama }}</strong></td>
+                                    <td>{{ $loker->komli }}</td>
+                                    <td>{{ $loker->telepon }}</td>
+                                    <td>{{ $loker->alamat }}</td>
                                     <td>
                                         <form onsubmit="return confirm('Apakah Anda Yakin ?');"
-                                            action="{{ route('guru.destroy', $guru) }}" method="post">
+                                            action="{{ route('guru.destroy', $loker) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <a class="btn btn-primary mb-2"
-                                                href="{{ route('guru.edit', $guru->id) }}">Edit</a>
+                                                href="{{ route('guru.edit', $loker->id) }}">Edit</a>
 
                                             <button class="btn btn-danger" type="submit">Hapus</button>
                                         </form>

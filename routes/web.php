@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     AdminController,
     GuruController,
-    ArtikelController
+    ArtikelController,
+    LokerController
 };
 use Illuminate\Support\Facades\Auth;
 
@@ -26,6 +27,7 @@ Route::middleware('auth')->group(function () {
     // user harus memiliki role admin atau guru untuk mengakses
     Route::middleware('role:admin|guru')->group(function () {
         route::resource('/artikel', ArtikelController::class)->except('index', 'show');
+        route::resource('/loker', LokerController::class)->except('index', 'show');
     });
 
     // user harus memiliki role admin untuk mengakses
@@ -62,6 +64,11 @@ Route::controller(ArtikelController::class)->prefix('artikel')->name('artikel.')
 });
 
 Route::controller(GuruController::class)->prefix('guru')->name('guru.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/{id}', 'show')->name('show');
+});
+
+Route::controller(LokerController::class)->prefix('loker')->name('loker.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/{id}', 'show')->name('show');
 });

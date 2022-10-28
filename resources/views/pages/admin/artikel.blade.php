@@ -40,8 +40,8 @@
                             @forelse ($dataArtikel as $artikel)
                                 <tr>
                                     <td>{{ $artikel->judul }}</td>
-                                    <td>{{ $artikel->kategori }}</td>
                                     <td>{{ $artikel->user->name }}</td>
+                                    <td>{{ $artikel->kategori }}</td>
                                     <td>{{ $artikel->created_at }}</td>
                                     <td>
                                         <form onsubmit="return confirm('Apakah Anda Yakin ?');"

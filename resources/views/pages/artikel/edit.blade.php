@@ -1,96 +1,105 @@
-@extends('layouts.main')
+@extends('layouts.dashboard')
 
-@section('title', 'Edit Artikel ' . $artikel->judul)
-
+@section('title', 'Edit ' . $artikel->judul)
 @section('content')
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
-        <div class="container position-relative" data-aos="fade-up">
+    <div class="container-fluid">
 
-            <div class="row gy-4 d-flex justify-content-center">
-
-                <div class="col-lg-8" data-aos="fade-up" data-aos-delay="250">
-
-                    <form action="{{ route('artikel.update', $artikel) }}" method="post" role="form"
-                        class="php-email-form" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-
-                        <div class="form-group mt-3">
-                            <div class="text-center mb-3">
-                                <img src="{{ Storage::url('public/artikel/') . $artikel->foto }}" alt=""
-                                    class="img-fluid w-50">
-                            </div>
-                            <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto"
-                                id="foto">
-
-                            @error('foto')
-                                <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <input type="text" class="form-control @error('judul') is-invalid @enderror" name="judul"
-                                id="judul" placeholder="Judul" value="{{ old('judul', $artikel->judul) }}" required>
-
-                            @error('judul')
-                                <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <input type="text" class="form-control @error('kategori') is-invalid @enderror"
-                                name="kategori" id="kategori" placeholder="Kategori"
-                                value="{{ old('kategori', $artikel->kategori) }}" required>
-
-                            @error('kategori')
-                                <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <textarea class="form-control @error('isi') is-invalid @enderror" name="isi" id="summernote"></textarea>
-
-                            @error('isi')
-                                <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
-                                    {{ $message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="text-center mt-3">
-                            <a href="{{ route('guru.index') }}" class="btn-back me-2">Kembali</a>
-                            <button type="submit">Simpan</button>
-                        </div>
-                    </form>
-
-                </div><!-- End Contact Form -->
-            </div>
-
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">@yield('title')</h1>
         </div>
-    </section><!-- End Contact Section -->
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <form action="{{ route('artikel.update', $artikel) }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="form-group">
+                        <label for="foto">Thumbnail</label>
+                        <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" id="foto">
+
+                        @error('foto')
+                            <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
+                                {{ $message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="judul">Judul</label>
+                        <input type="text" class="form-control @error('judul') is-invalid @enderror" id="judul"
+                            name="judul" value="{{ old('judul', $artikel->judul) }}">
+
+                        @error('judul')
+                            <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
+                                {{ $message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kategori">Kategori</label>
+                        <input type="text" class="form-control @error('kategori') is-invalid @enderror" id="kategori"
+                            name="kategori" value="{{ old('kategori', $artikel->kategori) }}">
+
+                        @error('kategori')
+                            <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
+                                {{ $message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isi">Konten</label>
+                        <textarea class="form-control @error('isi') is-invalid @enderror" name="isi" id="isi">{{ old('isi', $artikel->isi) }}</textarea>
+
+                        @error('isi')
+                            <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
+                                {{ $message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-5">
+                        <a href="{{ route('admin.artikel') }}" class="btn btn-secondary mr-3">Kembali</a>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
 @endsection
 
-@push('script')
+@push('styles')
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.2.1/classic/ckeditor.js"></script>
+
     <script>
-        $(document).ready(function() {
-            $('#summernote').summernote();
-            var isi = {!! json_encode($artikel->isi) !!};
-            $('#summernote').summernote('code', isi);
-        });
+        ClassicEditor
+            .create(document.querySelector('#isi'), {
+                toolbar: ["undo", "redo", "heading", "bold", "italic", "blockQuote", "link", "numberedList",
+                    "bulletedList"
+                ],
+            })
+            .catch(error => {
+                console.error(error);
+            });
     </script>
 @endpush

@@ -13,74 +13,62 @@ class LokerController extends Controller
         $dataLoker = Loker::orderBy('id', 'DESC')->paginate(9);
         return view('pages.loker.index', compact('dataLoker'));
     }
-    
+
     public function create()
     {
-        //
+        return view('pages.loker.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'judul' => 'required',
-            'kategori' => 'string',
-            'isi' => 'string',
+            'nama_perusahaan' => 'required',
+            'email' => 'required',
+            'alamat' => 'required',
+            'loker' => 'required',
         ]);
 
-        $isi = $request->isi;
-        $dom = new \DomDocument();
-        $dom->loadHtml($isi, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $imageFile = $dom->getElementsByTagName('imageFile');
+        $request['user_id'] = auth()->user()->id;
+        Loker::create($request->all());
 
-        foreach ($imageFile as $item => $image) {
-            $data = $img->getAttribute('src');
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
-            $imgeData = base64_decode($data);
-            $image_name = "/upload/" . time() . $item . '.png';
-            $path = public_path() . $image_name;
-            file_put_contents($path, $imgeData);
-
-            $image->removeAttribute('src');
-            $image->setAttribute('src', $image_name);
-        }
-
-        $foto = $request->file('foto');
-        $namaFoto = time() . $foto->hashName();
-        $foto->storeAs('public/loker', $namaFoto);
-
-        Loker::create([
-            'user_id' => auth()->user()->id,
-            'foto' => $namaFoto,
-            'judul' => $request->judul,
-            'slug' => $request->judul,
-            'kategori' => $request->kategori,
-            'isi' => $dom->saveHTML(),
-        ]);
-
-        Alert::success('Berhasil!', 'Artikel Berhasil Ditambahkan');
-
-        return redirect()->route('artikel.index');
+        Alert::success('Berhasil!', 'Loker Berhasil Ditambahkan');
+        
+        return redirect()->route('admin.loker');
     }
-    
+
     public function show(Loker $loker)
     {
         //
     }
-    
+
     public function edit(Loker $loker)
     {
-        //
+        return view('pages.loker.edit', compact('loker'));
     }
-    
+
     public function update(Request $request, Loker $loker)
     {
-        //
+        $request->validate([
+            'nama_perusahaan' => 'required',
+            'email' => 'required|email',
+            'alamat' => 'required',
+            'loker' => 'required',
+        ]);
+
+        $request['user_id'] = auth()->user()->id;
+        $loker->update($request->all());
+
+        Alert::success('Berhasil!', 'Loker Berhasil Ditambahkan');
+
+        return redirect()->route('admin.loker');
     }
 
     public function destroy(Loker $loker)
     {
-        //
+        $loker->delete();
+
+        Alert::success('Berhasil!', 'Loker Berhasil Dihapus');
+        
+        return redirect()->back();
     }
 }

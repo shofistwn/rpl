@@ -6,12 +6,17 @@ use App\Models\Artikel;
 use App\Models\Guru;
 use App\Models\Loker;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return view('pages.admin.index');
+        $totalGuru = Role::withCount('users')->where('name', 'guru')->first()->users_count;
+        $totalArtikel = Artikel::get()->count();
+        $totalLoker = Loker::get()->count();
+
+        return view('pages.admin.index', compact('totalArtikel', 'totalLoker', 'totalGuru'));
     }
 
     public function guru()

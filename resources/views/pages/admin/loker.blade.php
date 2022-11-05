@@ -1,13 +1,13 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Guru')
+@section('title', 'Lowongan Perkerjaan')
 @section('content')
     <div class="container-fluid">
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">@yield('title')</h1>
-            <a href="{{ route('guru.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Tambah Guru</a>
+            <a href="{{ route('loker.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Posting Loker</a>
         </div>
 
         <!-- DataTales Example -->
@@ -20,20 +20,18 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Foto</th>
-                                <th>Nama</th>
-                                <th>Kompetensi Keahlian</th>
-                                <th>Telepon</th>
+                                <th>Perusahaan</th>
+                                <th>Loker</th>
+                                <th>Email</th>
                                 <th>Alamat</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>Foto</th>
-                                <th>Nama</th>
-                                <th>Kompetensi Keahlian</th>
-                                <th>Telepon</th>
+                                <th>Perusahaan</th>
+                                <th>Loker</th>
+                                <th>Email</th>
                                 <th>Alamat</th>
                                 <th>Aksi</th>
                             </tr>
@@ -41,20 +39,17 @@
                         <tbody>
                             @forelse ($dataLoker as $loker)
                                 <tr>
-                                    <td>
-                                        <img class="img-profile rounded-circle w-25" src="{{ Storage::url('public/guru/') . $loker->foto }}">
-                                    </td>
-                                    <td><strong>{{ $loker->nama }}</strong></td>
-                                    <td>{{ $loker->komli }}</td>
-                                    <td>{{ $loker->telepon }}</td>
+                                    <td>{{ $loker->nama_perusahaan }}</td>
+                                    <td><strong>{{ $loker->loker }}</strong></td>
+                                    <td>{{ $loker->email }}</td>
                                     <td>{{ $loker->alamat }}</td>
                                     <td>
                                         <form onsubmit="return confirm('Apakah Anda Yakin ?');"
-                                            action="{{ route('guru.destroy', $loker) }}" method="post">
+                                            action="{{ route('loker.destroy', $loker) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <a class="btn btn-primary mb-2"
-                                                href="{{ route('guru.edit', $loker->id) }}">Edit</a>
+                                                href="{{ route('loker.edit', $loker->id) }}">Edit</a>
 
                                             <button class="btn btn-danger" type="submit">Hapus</button>
                                         </form>

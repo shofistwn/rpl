@@ -20,8 +20,16 @@ class ArtikelController extends Controller
     {
         $judul = $request->judul;
 
+        $dataArtikel = Artikel::where('judul', 'like', "%" . $judul . "%")
+            ->paginate(6);
+
+        return view('pages.artikel.index', compact('dataArtikel'));
+    }
+
+    public function category($kategori)
+    {
         $dataArtikel = DB::table('artikel')
-            ->where('judul', 'like', "%" . $judul . "%")
+            ->where('kategori', 'like', "%" . $kategori . "%")
             ->paginate(6);
 
         return view('pages.artikel.index', compact('dataArtikel'));
@@ -41,24 +49,6 @@ class ArtikelController extends Controller
             'isi' => 'string',
         ]);
 
-        $isi = $request->isi;
-        $dom = new \DomDocument();
-        $dom->loadHtml($isi, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $imageFile = $dom->getElementsByTagName('imageFile');
-
-        foreach ($imageFile as $item => $image) {
-            $data = $img->getAttribute('src');
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
-            $imgeData = base64_decode($data);
-            $image_name = "/upload/" . time() . $item . '.png';
-            $path = public_path() . $image_name;
-            file_put_contents($path, $imgeData);
-
-            $image->removeAttribute('src');
-            $image->setAttribute('src', $image_name);
-        }
-
         $foto = $request->file('foto');
         $namaFoto = time() . $foto->hashName();
         $foto->storeAs('public/artikel', $namaFoto);
@@ -69,7 +59,7 @@ class ArtikelController extends Controller
             'judul' => $request->judul,
             'slug' => $request->judul,
             'kategori' => $request->kategori,
-            'isi' => $dom->saveHTML(),
+            'isi' => $request->isi,
         ]);
 
         Alert::success('Berhasil!', 'Artikel Berhasil Ditambahkan');
@@ -97,31 +87,13 @@ class ArtikelController extends Controller
             'isi' => 'string',
         ]);
 
-        $isi = $request->isi;
-        $dom = new \DomDocument();
-        $dom->loadHtml($isi, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $imageFile = $dom->getElementsByTagName('imageFile');
-
-        foreach ($imageFile as $item => $image) {
-            $data = $img->getAttribute('src');
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
-            $imgeData = base64_decode($data);
-            $image_name = "/upload/" . time() . $item . '.png';
-            $path = public_path() . $image_name;
-            file_put_contents($path, $imgeData);
-
-            $image->removeAttribute('src');
-            $image->setAttribute('src', $image_name);
-        }
-
         if ($request->file('foto') == "") {
             $artikel->update([
                 'user_id' => auth()->user()->id,
                 'judul' => $request->judul,
                 'slug' => $request->judul,
                 'kategori' => $request->kategori,
-                'isi' => $dom->saveHTML(),
+                'isi' => $request->isi,
             ]);
         } else {
             Storage::disk('local')->delete('public/public/artikel/' . $artikel->foto);
@@ -136,7 +108,7 @@ class ArtikelController extends Controller
                 'judul' => $request->judul,
                 'slug' => $request->judul,
                 'kategori' => $request->kategori,
-                'isi' => $dom->saveHTML(),
+                'isi' => $request->isi,
             ]);
         }
 

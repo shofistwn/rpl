@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Tambah Guru')
+@section('title', 'Edit Loker ' . $loker->nama_perusahaan)
 @section('content')
     <div class="container-fluid">
 
@@ -12,29 +12,16 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-body">
-                <form action="{{ route('guru.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('loker.update', $loker) }}" method="post" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
 
                     <div class="form-group">
-                        <label for="foto">Foto</label>
-                        <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" id="foto">
+                        <label for="nama">Nama Perusahaan</label>
+                        <input type="text" class="form-control @error('nama_perusahaan') is-invalid @enderror"
+                            id="nama" name="nama_perusahaan" value="{{ old('nama_perusahaan', $loker->nama_perusahaan) }}">
 
-                        @error('foto')
-                            <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
-                                {{ $message }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="nama">Nama</label>
-                        <input type="text" class="form-control @error('nama') is-invalid @enderror"
-                            id="nama" name="nama" value="{{ old('nama') }}">
-
-                        @error('nama')
+                        @error('nama_perusahaan')
                             <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
                                 {{ $message }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -44,10 +31,10 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="komli">Kompetensi Keahlian</label>
-                        <input type="text" class="form-control @error('komli') is-invalid @enderror" id="komli" name="komli" value="{{ old('komli') }}">
+                        <label for="loker">Loker</label>
+                        <input type="text" class="form-control @error('loker') is-invalid @enderror" id="loker" name="loker" value="{{ old('loker', $loker->loker) }}">
 
-                        @error('komli')
+                        @error('loker')
                             <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
                                 {{ $message }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -57,10 +44,10 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="telepon">Telepon</label>
-                        <input type="text" class="form-control @error('telepon') is-invalid @enderror" id="telepon" name="telepon" value="{{ old('telepon') }}">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $loker->email) }}">
 
-                        @error('telepon')
+                        @error('email')
                             <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
                                 {{ $message }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -71,7 +58,7 @@
                     </div>
                     <div class="form-group">
                         <label for="alamat">Alamat</label>
-                        <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" rows="3" name="alamat">{{ old('alamat') }}</textarea>
+                        <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" rows="3" name="alamat">{{ old('alamat', $loker->alamat) }}</textarea>
 
                         @error('alamat')
                             <div class="alert alert-danger alert-dismissible fade show mt-2 mb-0" role="alert">
@@ -84,7 +71,7 @@
                     </div>
 
                     <div class="d-flex justify-content-center mt-5">
-                        <a href="{{ route('admin.guru') }}" class="btn btn-secondary mr-3">Kembali</a>
+                        <a href="{{ route('admin.loker') }}" class="btn btn-secondary mr-3">Kembali</a>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>

@@ -37,7 +37,7 @@
                         <div class="meta-bottom">
                             <i class="bi bi-folder"></i>
                             <ul class="cats">
-                                <li><a href="#">{{ $artikel->kategori }}</a></li>
+                                <li><a href="{{ route('artikel.category', $artikel->kategori) }}">{{ $artikel->kategori }}</a></li>
                             </ul>
                         </div><!-- End meta bottom -->
 

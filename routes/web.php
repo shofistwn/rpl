@@ -5,6 +5,7 @@ use App\Http\Controllers\{
     AdminController,
     GuruController,
     ArtikelController,
+    HomeController,
     LokerController
 };
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,17 @@ Auth::routes();
 
 // user perlu login untuk mengakses
 Route::middleware('auth')->group(function () {
+    Route::get('/home', function () {
+        if (auth()->user()->hasRole('admin')) {
+            return redirect()->route('admin.index');
+        } else {
+            return view('home');
+        }
+    })->name('home');
+
+    Route::get('/profil', [HomeController::class, 'profil'])->name('profil');
+    Route::post('/profil', [HomeController::class, 'updateProfil'])->name('updateProfil');
+
     // user harus memiliki role admin atau guru untuk mengakses
     Route::middleware('role:admin|guru')->group(function () {
         route::resource('/artikel', ArtikelController::class)->except('index', 'show');
@@ -39,11 +51,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/guru', 'guru')->name('guru');
             Route::get('/artikel', 'artikel')->name('artikel');
             Route::get('/loker', 'loker')->name('loker');
+            Route::get('/profil', 'profil')->name('profil');
         });
     });
 });
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/', function () {
     return view('pages.home');
@@ -59,8 +70,9 @@ Route::get('guru-page', function () {
 
 Route::controller(ArtikelController::class)->prefix('artikel')->name('artikel.')->group(function () {
     Route::get('/', 'index')->name('index');
-    Route::get('/{slug}', 'show')->name('show');
     Route::get('/search', 'search')->name('search');
+    Route::get('/{slug}', 'show')->name('show');
+    Route::get('/category/{kategori}', 'category')->name('category');
 });
 
 Route::controller(GuruController::class)->prefix('guru')->name('guru.')->group(function () {

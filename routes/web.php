@@ -60,6 +60,50 @@ Route::get('/', function () {
     return view('pages.home');
 })->name('index');
 
+Route::prefix('kompetensi')
+    ->name('kompetensi.')
+    ->group(function () {
+        Route::get('/pemrograman-dasar', function () {
+            return view('pages.komli.pemrograman-dasar');
+        })->name('pemrograman-dasar');
+
+        Route::get('/komputer-dan-jaringan-dasar', function () {
+            return view('pages.komli.komputer-dan-jaringan-dasar');
+        })->name('komputer-dan-jaringan-dasar');
+
+        Route::get('/dasar-desain-grafis', function () {
+            return view('pages.komli.dasar-desain-grafis');
+        })->name('dasar-desain-grafis');
+
+        Route::get('/sistem-komputer', function () {
+            return view('pages.komli.sistem-komputer');
+        })->name('sistem-komputer');
+
+        Route::get('/pemodelan-perangkat-lunak', function () {
+            return view('pages.komli.pemodelan-perangkat-lunak');
+        })->name('pemodelan-perangkat-lunak');
+
+        Route::get('/database', function () {
+            return view('pages.komli.database');
+        })->name('database');
+
+        Route::get('/web-programming', function () {
+            return view('pages.komli.web-programming');
+        })->name('web-programming');
+
+        Route::get('/object-oriented-programming', function () {
+            return view('pages.komli.object-oriented-programming');
+        })->name('object-oriented-programming');
+
+        Route::get('/mobile-programming', function () {
+            return view('pages.komli.mobile-programming');
+        })->name('mobile-programming');
+
+        Route::get('/kewirausahaan', function () {
+            return view('pages.komli.kewirausahaan');
+        })->name('kewirausahaan');
+    });
+
 Route::get('admin-page', function () {
     return 'Halaman untuk Admin';
 })->middleware('role:admin')->name('admin.page');

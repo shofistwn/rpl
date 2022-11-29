@@ -15,16 +15,18 @@
             <li class="dropdown"><a href="#"><span>Kompetensi</span> <i
                         class="bi bi-chevron-down dropdown-indicator"></i></a>
                 <ul>
-                    <li><a href="#">Pemrograman Dasar</a></li>
-                    <li><a href="#">Komputer dan Jaringan Dasar</a></li>
-                    <li><a href="#">Dasar Desain Grafis</a></li>
-                    <li><a href="#">Sistem Komputer</a></li>
-                    <li><a href="#">Pemodelan Perangkat Lunak</a></li>
-                    <li><a href="#">Database</a></li>
-                    <li><a href="#">Web Programming</a></li>
-                    <li><a href="#">Object Oriented Programming</a></li>
-                    <li><a href="#">Mobile Programming</a></li>
-                    <li><a href="#">Kewirausahaan</a></li>
+                    <li><a href="{{ route('kompetensi.pemrograman-dasar') }}">Pemrograman Dasar</a></li>
+                    <li><a href="{{ route('kompetensi.komputer-dan-jaringan-dasar') }}">Komputer dan Jaringan Dasar</a>
+                    </li>
+                    <li><a href="{{ route('kompetensi.dasar-desain-grafis') }}">Dasar Desain Grafis</a></li>
+                    <li><a href="{{ route('kompetensi.sistem-komputer') }}">Sistem Komputer</a></li>
+                    <li><a href="{{ route('kompetensi.pemodelan-perangkat-lunak') }}">Pemodelan Perangkat Lunak</a></li>
+                    <li><a href="{{ route('kompetensi.database') }}">Database</a></li>
+                    <li><a href="{{ route('kompetensi.web-programming') }}">Web Programming</a></li>
+                    <li><a href="{{ route('kompetensi.object-oriented-programming') }}">Object Oriented Programming</a>
+                    </li>
+                    <li><a href="{{ route('kompetensi.mobile-programming') }}">Mobile Programming</a></li>
+                    <li><a href="{{ route('kompetensi.kewirausahaan') }}">Kewirausahaan</a></li>
                 </ul>
             </li>
             <li class="dropdown"><a href="#"><span>Informasi</span> <i
@@ -40,7 +42,7 @@
             <li><a href="{{ route('artikel.index') }}">Artikel</a></li>
             <li><a href="contact.html">Kontak</a></li>
             @hasrole('admin')
-            <li><a href="{{ route('admin.index') }}">Dashboard</a></li>
+                <li><a href="{{ route('admin.index') }}">Dashboard</a></li>
             @endhasrole
             @guest
                 <li><a href="{{ route('login') }}">Login</a></li>

@@ -40,6 +40,11 @@
     <script src="https://shofistwn.github.io/rpl/public/assets/vendor/summernote/summernote-bs4.js"></script>
 
     @stack('style')
+    <style>
+        table td {
+            width: 50%
+        }
+    </style>
 
     <!-- =======================================================
   * Template Name: Nova - v1.2.0
@@ -62,7 +67,7 @@
         @if (!Request::is('/'))
             <!-- ======= Breadcrumbs ======= -->
             <div class="breadcrumbs d-flex align-items-center"
-                style="background-image: url('https://shofistwn.github.io/rpl/public/assets/img/team-header.jpg') }}');">
+                style="background-image: url('https://shofistwn.github.io/rpl/public/assets/komli/') }}@yield('komli-img')');">
                 <div class="container position-relative d-flex flex-column align-items-center">
 
                     <h2>@yield('title')</h2>

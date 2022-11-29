@@ -58,7 +58,7 @@ class LokerController extends Controller
         $request['user_id'] = auth()->user()->id;
         $loker->update($request->all());
 
-        Alert::success('Berhasil!', 'Loker Berhasil Ditambahkan');
+        Alert::success('Berhasil!', 'Loker Berhasil Diperbarui');
 
         return redirect()->route('admin.loker');
     }

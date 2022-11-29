@@ -16,16 +16,17 @@
     <title>@yield('title')</title>
 
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('dashboard/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://shofistwn.github.io/rpl/public/dashboard/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('dashboard/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="https://shofistwn.github.io/rpl/public/dashboard/css/sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="{{ asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="https://shofistwn.github.io/rpl/public/dashboard/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
 
     <!-- Custom Styles -->
     @stack('styles')
@@ -43,8 +44,18 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.index') }}">
-                <div class="sidebar-brand-text mx-3">{{ config('app.name', 'Laravel') }}</div>
+                <div class="sidebar-brand-text mx-3">RPL</div>
             </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('index') }}">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>Home</span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -213,7 +224,7 @@
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
                                         <img class="rounded-circle"
-                                            src="{{ asset('dashboard/img/undraw_profile_1.svg') }}" alt="...">
+                                            src="https://shofistwn.github.io/rpl/public/dashboard/img/undraw_profile_1.svg" alt="...">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div class="font-weight-bold">
@@ -225,7 +236,7 @@
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
                                         <img class="rounded-circle"
-                                            src="{{ asset('dashboard/img/undraw_profile_2.svg') }}" alt="...">
+                                            src="https://shofistwn.github.io/rpl/public/dashboard/img/undraw_profile_2.svg" alt="...">
                                         <div class="status-indicator"></div>
                                     </div>
                                     <div>
@@ -237,7 +248,7 @@
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
                                         <img class="rounded-circle"
-                                            src="{{ asset('dashboard/img/undraw_profile_3.svg') }}" alt="...">
+                                            src="https://shofistwn.github.io/rpl/public/dashboard/img/undraw_profile_3.svg" alt="...">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
                                     <div>
@@ -273,7 +284,7 @@
                                 <span
                                     class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
                                 <img class="img-profile rounded-circle"
-                                    src="{{ asset('dashboard/img/undraw_profile.svg') }}">
+                                    src="https://shofistwn.github.io/rpl/public/dashboard/img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -356,24 +367,28 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('dashboard/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://shofistwn.github.io/rpl/public/dashboard/vendor/jquery/jquery.min.js"></script>
+    <script src="https://shofistwn.github.io/rpl/public/dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('dashboard/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="https://shofistwn.github.io/rpl/public/dashboard/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('dashboard/js/sb-admin-2.min.js') }}"></script>
+    <script src="https://shofistwn.github.io/rpl/public/dashboard/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="{{ asset('dashboard/vendor/chart.js/Chart.min.js') }}"></script>
-    <script src="{{ asset('dashboard/vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="https://shofistwn.github.io/rpl/public/dashboard/vendor/chart.js/Chart.min.js"></script>
+    <script src="https://shofistwn.github.io/rpl/public/dashboard/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="https://shofistwn.github.io/rpl/public/dashboard/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ asset('dashboard/js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('dashboard/js/demo/chart-pie-demo.js') }}"></script>
-    <script src="{{ asset('dashboard/js/demo/datatables-demo.js') }}"></script>
+    <script src="https://shofistwn.github.io/rpl/public/dashboard/js/demo/chart-area-demo.js"></script>
+    <script src="https://shofistwn.github.io/rpl/public/dashboard/js/demo/chart-pie-demo.js"></script>
+    <script src="https://shofistwn.github.io/rpl/public/dashboard/js/demo/datatables-demo.js"></script>
 
     <!-- Custom Scripts -->
     @stack('scripts')

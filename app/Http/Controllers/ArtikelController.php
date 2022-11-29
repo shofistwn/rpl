@@ -28,8 +28,7 @@ class ArtikelController extends Controller
 
     public function category($kategori)
     {
-        $dataArtikel = DB::table('artikel')
-            ->where('kategori', 'like', "%" . $kategori . "%")
+        $dataArtikel = Artikel::where('kategori', 'like', "%" . $kategori . "%")
             ->paginate(6);
 
         return view('pages.artikel.index', compact('dataArtikel'));

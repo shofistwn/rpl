@@ -12,14 +12,14 @@
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Data @yield('title')</h6>
+
+                <form action="{{ route('guru.export') }}" method="post">
+                    @csrf
+                    <button class="btn btn-outline-info btn-sm" type="submit">Export</button>
+                </form>
             </div>
-            <style>
-                .dt-buttons {
-                    margin-left: 50px;
-                }
-            </style>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

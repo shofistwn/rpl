@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guru;
+use App\Exports\GuruExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GuruController extends Controller
 {
@@ -106,5 +108,10 @@ class GuruController extends Controller
         Alert::success('Berhasil!', 'Guru Berhasil Dihapus');
 
         return redirect()->route('guru.index');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new GuruExport, 'data-guru.xlsx');
     }
 }

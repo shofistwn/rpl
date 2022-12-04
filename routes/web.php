@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/loker', 'loker')->name('loker');
             Route::get('/profil', 'profil')->name('profil');
         });
+        Route::post('/guru/export', [GuruController::class, 'export'])->name('guru.export');
     });
 });
 

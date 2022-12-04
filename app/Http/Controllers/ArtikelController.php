@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
 
 class ArtikelController extends Controller
 {
     public function index()
     {
-        $dataArtikel = Artikel::orderBy('id', 'desc')->get();
+        $dataArtikel = Artikel::orderBy('id', 'desc')->paginate(6);
         return view('pages.artikel.index', compact('dataArtikel'));
     }
 
@@ -21,6 +22,7 @@ class ArtikelController extends Controller
         $judul = $request->judul;
 
         $dataArtikel = Artikel::where('judul', 'like', "%" . $judul . "%")
+            ->orderBy('id', 'desc')
             ->paginate(6);
 
         return view('pages.artikel.index', compact('dataArtikel'));
@@ -29,6 +31,16 @@ class ArtikelController extends Controller
     public function category($kategori)
     {
         $dataArtikel = Artikel::where('kategori', 'like', "%" . $kategori . "%")
+            ->orderBy('id', 'desc')
+            ->paginate(6);
+
+        return view('pages.artikel.index', compact('dataArtikel'));
+    }
+
+    public function byAuthor($user_id)
+    {
+        $dataArtikel = Artikel::where('user_id', $user_id)
+            ->orderBy('id', 'desc')
             ->paginate(6);
 
         return view('pages.artikel.index', compact('dataArtikel'));
@@ -41,13 +53,19 @@ class ArtikelController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        // dd(phpinfo());
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'judul' => 'required',
             'kategori' => 'string',
             'isi' => 'string',
         ]);
-
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        
         $foto = $request->file('foto');
         $namaFoto = time() . $foto->hashName();
         $foto->storeAs('public/artikel', $namaFoto);
@@ -63,7 +81,7 @@ class ArtikelController extends Controller
 
         Alert::success('Berhasil!', 'Artikel Berhasil Ditambahkan');
 
-        return redirect()->route('artikel.index');
+        return redirect()->route('admin.artikel');
     }
 
     public function show($slug)
@@ -113,7 +131,7 @@ class ArtikelController extends Controller
 
         Alert::success('Berhasil!', 'Artikel Berhasil Diedit');
 
-        return redirect()->route('artikel.index');
+        return redirect()->route('admin.artikel');
     }
 
     public function destroy(Artikel $artikel)

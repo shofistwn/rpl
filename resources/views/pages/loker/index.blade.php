@@ -30,7 +30,7 @@
                     <p class="text-muted text-center">Tidak ada data!</p>
                 @endforelse
 
-                <div class="my-5">
+                <div class="my-5 d-flex justify-content-center">
                     {{ $dataLoker->links() }}
                 </div>
             </div>

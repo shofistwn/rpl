@@ -117,6 +117,7 @@ Route::controller(ArtikelController::class)->prefix('artikel')->name('artikel.')
     Route::get('/search', 'search')->name('search');
     Route::get('/{slug}', 'show')->name('show');
     Route::get('/category/{kategori}', 'category')->name('category');
+    Route::get('/author/{user_id}', 'byAuthor')->name('author');
 });
 
 Route::controller(GuruController::class)->prefix('guru')->name('guru.')->group(function () {

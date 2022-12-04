@@ -1,6 +1,6 @@
 <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-    <a href="index.html" class="logo d-flex align-items-center">
+    <a href="{{ route('index') }}" class="logo d-flex align-items-center">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.png" alt=""> -->
         <h1 class="d-flex align-items-center">RPL</h1>
@@ -36,7 +36,7 @@
                     <li><a href="#">Struktur Organisasi RPL</a></li>
                     <li><a href="#">Struktur Organisasi UP CentroTech</a></li>
                     <li><a href="#">Informasi PKL</a></li>
-                    <li><a href="#">Informasi Lowongan Kerja</a></li>
+                    <li><a href="{{ route('loker.index') }}">Informasi Lowongan Kerja</a></li>
                 </ul>
             </li>
             <li><a href="{{ route('artikel.index') }}">Artikel</a></li>

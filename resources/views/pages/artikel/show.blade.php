@@ -14,7 +14,7 @@
                     <article class="blog-details">
 
                         <div class="post-img">
-                            <img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
+                            <img style="width: 100%" src="{{ Storage::url('public/artikel/') . $artikel->foto }}" alt="" class="img-fluid">
                         </div>
 
                         <h2 class="title">{{ $artikel->judul }}</h2>
@@ -22,13 +22,11 @@
                         <div class="meta-top">
                             <ul>
                                 <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
-                                        href="blog-details.html">{{ $artikel->user->name }}</a></li>
-                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
-                                        href="blog-details.html"><time datetime="2020-01-01">{{ $artikel->created_at }}</time></a></li>
-                                <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a
-                                        href="blog-details.html">12 Comments</a></li>
+                                        href="{{ route('artikel.author', $artikel->user_id) }}">{{ $artikel->user->name }}</a></li>
+                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i><time
+                                            datetime="{{ date('Y-m-d', strtotime($artikel->created_at)) }}">{{ date('M d, Y', strtotime($artikel->created_at)) }}</time></li>
                             </ul>
-                        </div><!-- End meta top -->
+                        </div>
 
                         <div class="content">
                           {!! $artikel->isi !!}
